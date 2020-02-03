@@ -17,16 +17,20 @@ final class LibraryFooterBarView: UIView {
             setNeedsLayout()
         }
     }
-    var onSaved: (() -> Void)?
     
+    var onSaveButtonPressed: (() -> Void)?
+    var imageForRemoveDict: [String: UIImage] = [:]
+    var onRemoveButtonPressed: (() -> Void)?
+
     private lazy var saveOnDeviceGalleryButton: UIButton = {
         let button = UIButton(type: .system)
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
         button.backgroundColor = #colorLiteral(red: 0.7879012227, green: 0.7959392071, blue: 0.8083154559, alpha: 1)
-        button.tintColor = .gray
-        button.addTarget(self, action: #selector(saveOnDevice), for: .touchUpInside)
-        button.setImage(UIImage(named: "saveOnDevice"), for: .normal)
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
+        button.setImage(UIImage(named: "download"), for: .normal)
+        button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         return button
     }()
     
@@ -35,9 +39,10 @@ final class LibraryFooterBarView: UIView {
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
         button.backgroundColor =  #colorLiteral(red: 0.7879012227, green: 0.7959392071, blue: 0.8083154559, alpha: 1)
-        button.tintColor = .gray
-        button.addTarget(self, action: #selector(removeFromDirectory), for: .touchUpInside)
-        button.setImage(UIImage(named: "remove"), for: .normal)
+        button.tintColor = .black
+        button.addTarget(self, action: #selector(removeButtonPressed), for: .touchUpInside)
+        button.setImage(UIImage(named: "garbage"), for: .normal)
+        button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         return button
     }()
     
@@ -62,19 +67,21 @@ final class LibraryFooterBarView: UIView {
         
         removeButton.isHidden = selected
         saveOnDeviceGalleryButton.isHidden = selected
-
         removeButton.frame = CGRect(x: 5, y: 5, width: 50, height: 50)
         saveOnDeviceGalleryButton.frame = CGRect(x: self.bounds.width - 55, y: 5, width: 50, height: 50)
     }
     
     // MARK: - Actions
     
-    @objc func saveOnDevice() {
-        print("Save on device")
-        onSaved?()
+    @objc private func saveButtonPressed() {
+        onSaveButtonPressed?()
     }
     
-    @objc func removeFromDirectory() {
-        print("Remove from device")
+    @objc private func removeButtonPressed() {
+        imageForRemoveDict.forEach { (key, _) in
+            DeviceData.shared.removeImageFromDirectory(with: key)
+        }
+        selected = true
+        onRemoveButtonPressed?()
     }
 }

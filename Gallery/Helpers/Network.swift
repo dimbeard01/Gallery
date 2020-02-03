@@ -10,20 +10,17 @@ import UIKit
 
 final class Network {
     
+    static let shared = Network()
+
     private let baseURL: String = "https://api.unsplash.com/search/photos"
+    private let accessKey = "bf8a5599911a4a86f99f8d8c80b21cdd132763ebacc300014ea2345fb0a25b0a"
     private var pageCout = 2
     private var searchQuery: String = ""
-
-    static let shared = Network()
     
     func fetchImagesURL(with query: String, completion: @escaping (NetworkImageModel?) -> Void) {
-
         imageCache.removeAllObjects()
         searchQuery = query
-        
-        let accessKey = "bf8a5599911a4a86f99f8d8c80b21cdd132763ebacc300014ea2345fb0a25b0a"
         let queryString = "\(baseURL)?per_page=30&page=1&query=\(searchQuery)&client_id=\(accessKey)"
-        
         guard let url = URL(string: queryString) else { return }
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -48,10 +45,7 @@ final class Network {
     }
     
     func fetchNextPageImagesURL(completion: @escaping (NetworkImageModel?) -> Void) {
-        
-        let accessKey = "bf8a5599911a4a86f99f8d8c80b21cdd132763ebacc300014ea2345fb0a25b0a"
         let queryString = "\(baseURL)?per_page=30&page=\(pageCout)&query=\(searchQuery)&client_id=\(accessKey)"
-        
         guard let url = URL(string: queryString) else { return }
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -76,9 +70,7 @@ final class Network {
         }.resume()
     }
     
-    
     func fetchImage(with stringUrl: String, completion: @escaping (UIImage?) -> Void) {
-        
         guard let url = URL(string: stringUrl) else { return }
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in

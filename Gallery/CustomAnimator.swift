@@ -8,15 +8,15 @@
 
 import UIKit
 
-class CustomAnimator : NSObject, UIViewControllerAnimatedTransitioning {
+final class CustomAnimator : NSObject, UIViewControllerAnimatedTransitioning {
     
-    var duration : TimeInterval
-    var isPresenting : Bool
-    var originFrame : CGRect
-    var image : UIImage
+    var duration: TimeInterval
+    var isPresenting: Bool
+    var originFrame: CGRect
+    var image: UIImage
     var previewImage: CGRect
     
-        init(duration : TimeInterval, isPresenting : Bool, originFrame : CGRect, image : UIImage, previewImage: CGRect) {
+    init(duration: TimeInterval, isPresenting: Bool, originFrame: CGRect, image: UIImage, previewImage: CGRect) {
         self.duration = duration
         self.isPresenting = isPresenting
         self.originFrame = originFrame
@@ -39,7 +39,7 @@ class CustomAnimator : NSObject, UIViewControllerAnimatedTransitioning {
         previewImage.image = image
         previewImage.alpha = 0
         
-        let originFrameWithNavBar = CGRect(x: originFrame.origin.x, y: originFrame.origin.y + 70, width: originFrame.width, height: originFrame.height)
+        let originFrameWithNavBar = CGRect(x: originFrame.origin.x, y: originFrame.origin.y, width: originFrame.width, height: originFrame.height)
         let transitionImageView = UIImageView(frame: isPresenting ? originFrameWithNavBar : previewImage.frame)
         transitionImageView.image = image
         
@@ -51,10 +51,10 @@ class CustomAnimator : NSObject, UIViewControllerAnimatedTransitioning {
         
         UIView.animate(withDuration: duration, animations: {
          
-            transitionImageView.frame = self.isPresenting ?  previewImage.frame : originFrameWithNavBar
+            transitionImageView.frame = self.isPresenting ? previewImage.frame : originFrameWithNavBar
             detailView.frame = self.isPresenting ? fromView.frame : CGRect(x: 0, y: 0, width: toView.frame.width, height: toView.frame.height)
             detailView.alpha = self.isPresenting ? 1 : 0
-        }, completion: { (finished) in
+        }, completion: { (_) in
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
             transitionImageView.removeFromSuperview()
             previewImage.alpha = 1
@@ -65,10 +65,3 @@ class CustomAnimator : NSObject, UIViewControllerAnimatedTransitioning {
         return duration
     }
 }
-
-
-
-
-
-
-

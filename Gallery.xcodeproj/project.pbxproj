@@ -15,7 +15,7 @@
 		AE77862423C5092B00D0A562 /* LibraryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE77862323C5092B00D0A562 /* LibraryCollectionViewController.swift */; };
 		AE77862623C5099E00D0A562 /* LibraryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE77862523C5099E00D0A562 /* LibraryCollectionViewCell.swift */; };
 		AE832A5223C0CB6D00F34902 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE832A5123C0CB6D00F34902 /* CustomImageView.swift */; };
-		AEA3693B23C5F53500C53D70 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA3693A23C5F53500C53D70 /* Extensions.swift */; };
+		AEA3693B23C5F53500C53D70 /* DeviceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA3693A23C5F53500C53D70 /* DeviceData.swift */; };
 		AEA3693D23C619DB00C53D70 /* LibraryFooterBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA3693C23C619DB00C53D70 /* LibraryFooterBarView.swift */; };
 		AEA3694123C6252700C53D70 /* LibraryPreviewCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA3694023C6252700C53D70 /* LibraryPreviewCollectionViewController.swift */; };
 		AEA3694323C6260500C53D70 /* LibraryPreviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA3694223C6260500C53D70 /* LibraryPreviewCollectionViewCell.swift */; };
@@ -40,7 +40,7 @@
 		AE77862323C5092B00D0A562 /* LibraryCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCollectionViewController.swift; sourceTree = "<group>"; };
 		AE77862523C5099E00D0A562 /* LibraryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCollectionViewCell.swift; sourceTree = "<group>"; };
 		AE832A5123C0CB6D00F34902 /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
-		AEA3693A23C5F53500C53D70 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		AEA3693A23C5F53500C53D70 /* DeviceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceData.swift; sourceTree = "<group>"; };
 		AEA3693C23C619DB00C53D70 /* LibraryFooterBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryFooterBarView.swift; sourceTree = "<group>"; };
 		AEA3694023C6252700C53D70 /* LibraryPreviewCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPreviewCollectionViewController.swift; sourceTree = "<group>"; };
 		AEA3694223C6260500C53D70 /* LibraryPreviewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPreviewCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -65,6 +65,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AE55E0E323CDF4D9003DEBAC /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				AEA3693A23C5F53500C53D70 /* DeviceData.swift */,
+				AE5DDB9823BCF97800060D49 /* Network.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		AE5DDB7A23BCF94B00060D49 = {
 			isa = PBXGroup;
 			children = (
@@ -89,10 +98,9 @@
 				AE77862223C508B500D0A562 /* LibraryController */,
 				AEA3694423C6263F00C53D70 /* LibraryPreviewController */,
 				AEB84B5D23C2597B005B05B6 /* Model */,
+				AE55E0E323CDF4D9003DEBAC /* Helpers */,
 				AEB18D8423C351F50087F4F0 /* CustomAnimator.swift */,
 				AE832A5123C0CB6D00F34902 /* CustomImageView.swift */,
-				AEA3693A23C5F53500C53D70 /* Extensions.swift */,
-				AE5DDB9823BCF97800060D49 /* Network.swift */,
 				AE5DDB8623BCF94B00060D49 /* AppDelegate.swift */,
 				AE5DDB8D23BCF94C00060D49 /* Assets.xcassets */,
 				AE5DDB8F23BCF94C00060D49 /* LaunchScreen.storyboard */,
@@ -235,7 +243,7 @@
 				AE832A5223C0CB6D00F34902 /* CustomImageView.swift in Sources */,
 				AEB84B5C23C2596E005B05B6 /* FooterBarView.swift in Sources */,
 				AEA3694323C6260500C53D70 /* LibraryPreviewCollectionViewCell.swift in Sources */,
-				AEA3693B23C5F53500C53D70 /* Extensions.swift in Sources */,
+				AEA3693B23C5F53500C53D70 /* DeviceData.swift in Sources */,
 				AED0CEF723C1F74700E2E410 /* PreviewCollectionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

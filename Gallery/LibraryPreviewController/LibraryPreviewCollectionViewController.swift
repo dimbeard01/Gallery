@@ -18,7 +18,7 @@ final class LibraryPreviewCollectionViewController: UICollectionViewController {
         return layout
     }()
     
-    var imageList: [UIImage]? {
+    var imageList: [[String: UIImage]]? {
         didSet {
             DispatchQueue.main.async {
                 self.scrollToSelectedItem()
@@ -26,15 +26,17 @@ final class LibraryPreviewCollectionViewController: UICollectionViewController {
             }
         }
     }
-        
-    var totalImage: Int = 0
     var selectedItem: IndexPath?
-    
+    var onScrollToNewItem: ((IndexPath) -> Void)?
+
     // MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupCollectionView()
+        setupCustomBackBarButton()
+        scrollToSelectedItem()
     }
     
     // MARK: - Init
@@ -57,9 +59,27 @@ final class LibraryPreviewCollectionViewController: UICollectionViewController {
         collectionView.dataSource = self
     }
     
+    private func setupCustomBackBarButton() {
+        let backBarButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(backBarButtonPressed))
+        navigationItem.leftBarButtonItem = backBarButton
+    }
+    
     private func scrollToSelectedItem() {
         guard let indexPath = selectedItem else { return }
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
+    }
+    
+    // MARK: - Actions
+    
+    @objc func backBarButtonPressed() {
+        var visibleRect = CGRect()
+        visibleRect.origin = collectionView.contentOffset
+        visibleRect.size = collectionView.bounds.size
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        
+        guard let indexPath = collectionView.indexPathForItem(at: visiblePoint) else { return }
+        onScrollToNewItem?(indexPath)
+        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -74,9 +94,8 @@ extension LibraryPreviewCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LibraryPreviewCollectionViewCell.identifier, for: indexPath) as? LibraryPreviewCollectionViewCell else { return UICollectionViewCell() }
         
-        guard let imageFromDirectory = imageList?[indexPath.item] else { return UICollectionViewCell() }
-        
-        cell.configure(with: imageFromDirectory)
+        guard let imageList = imageList?[indexPath.item] else { return UICollectionViewCell() }
+        cell.configure(with: imageList)
         return cell
     }
 }
@@ -86,7 +105,9 @@ extension LibraryPreviewCollectionViewController {
 extension LibraryPreviewCollectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+       
+        let height = collectionView.bounds.height - 64
+        return CGSize(width: collectionView.bounds.width, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

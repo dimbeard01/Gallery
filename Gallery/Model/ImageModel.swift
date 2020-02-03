@@ -9,11 +9,12 @@
 import UIKit
 
 final class ImageModel {
-    let imageURLList: [ImageList]
+    
+    let imageList: [ImageList]
     let totalItem: Int
 
     init(model: NetworkImageModel) {
-        self.imageURLList = model.results
+        self.imageList = model.results
         self.totalItem = model.total
     }
 }

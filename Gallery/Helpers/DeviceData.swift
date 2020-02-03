@@ -1,5 +1,5 @@
 //
-//  Extensions.swift
+//  DeviceData.swift
 //  Gallery
 //
 //  Created by Dima Surkov on 08.01.2020.
@@ -8,17 +8,11 @@
 
 import UIKit
 
-extension UIImage {
+final class DeviceData {
     
-    func getDirectoryPath() -> NSURL {
-        
-        let path = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent("galleryImages")
-        guard let url = NSURL(string: path) else { return NSURL() }
-        return url
-    }
-    
+    static let shared = DeviceData()
+  
     func saveImageDocumentDirectory(image: UIImage, imageName: String) {
-        
         let fileManager = FileManager.default
         let path = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent("galleryImages")
         
@@ -33,19 +27,18 @@ extension UIImage {
         let url = NSURL(string: path)
         let imagePath = url!.appendingPathComponent(imageName)
         let urlString: String = imagePath!.absoluteString
-        print(urlString)
-        guard let imageData = image.jpegData(compressionQuality: 1) else { fatalError("fs") }
+        
+        guard let imageData = image.jpegData(compressionQuality: 1) else { return }
         fileManager.createFile(atPath: urlString as String, contents: imageData, attributes: nil)
     }
     
-    func getImageFromDocumentDirectory() -> [UIImage]? {
-    
+    func getDataDocumentDirectory() -> [[String: UIImage]]? {
         let fileManager = FileManager.default
-        var imageList: [UIImage] = []
         var contentList: [String] = []
+        var dataList = [[String: UIImage]]()
 
-        guard let imagePath = self.getDirectoryPath() as NSURL? else { return nil }
-        guard let path = imagePath.absoluteString else { return nil }
+        guard let directoryPath = getDirectoryPath() as NSURL? else { return nil }
+        guard let path = directoryPath.absoluteString else { return nil }
         
         do {
             let content = try fileManager.contentsOfDirectory(atPath: path)
@@ -54,23 +47,23 @@ extension UIImage {
             print("error of getting content")
         }
         
-        contentList.forEach{ (component) in
-            let imagePath = (self.getDirectoryPath() as NSURL).appendingPathComponent(component)
-            let urlString: String = imagePath!.absoluteString
+        contentList.forEach { (key) in
+            guard let imagePath = directoryPath.appendingPathComponent(key) else { return }
+            let urlString: String = imagePath.absoluteString
+            
             if fileManager.fileExists(atPath: urlString) {
                 guard let image = UIImage(contentsOfFile: urlString) else { return }
-                imageList.append(image)
+                dataList.append([key: image])
             } else {
-                 return
+                return
             }
         }
-        return imageList
+        return dataList
     }
     
-    // MARK: - WIP
-    func deleteImageFromDirectory(imageName: String) {
+    func removeImageFromDirectory(with imageName: String) {
         let fileManager = FileManager.default
-        let yourProjectImagesPath = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent("galleryImages") + imageName
+        let yourProjectImagesPath = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent("galleryImages/\(imageName)")
 
         if fileManager.fileExists(atPath: yourProjectImagesPath) {
             do {
@@ -80,5 +73,10 @@ extension UIImage {
             }
         }
     }
+    
+    private func getDirectoryPath() -> NSURL {
+        let path = (NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString).appendingPathComponent("galleryImages")
+        guard let url = NSURL(string: path) else { return NSURL() }
+        return url
+    }
 }
-

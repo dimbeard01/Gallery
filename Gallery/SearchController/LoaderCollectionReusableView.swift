@@ -23,6 +23,7 @@ final class LoaderCollectionReusableView: UICollectionReusableView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        addSubview(loaderIndicator)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -33,8 +34,6 @@ final class LoaderCollectionReusableView: UICollectionReusableView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-
-        addSubview(loaderIndicator)
         loaderIndicator.frame = CGRect(x: center.x - 25, y: 0, width: 50, height: 50)
     }
 }

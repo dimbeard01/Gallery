@@ -24,7 +24,7 @@ final class ImageCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    private let image: CustomImageView = {
+    private let imageCell: CustomImageView = {
         let image = CustomImageView()
         image.contentMode = .scaleAspectFill
         return image
@@ -34,7 +34,9 @@ final class ImageCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         contentView.clipsToBounds = true
+        contentView.addSubview(imageCell)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -42,21 +44,15 @@ final class ImageCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Layout
-
+    
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        contentView.addSubview(image)
-        image.frame = CGRect(x: 0, y: 0, width: contentView.bounds.width, height: contentView.bounds.height)
+        imageCell.frame = CGRect(x: 0, y: 0, width: contentView.bounds.width, height: contentView.bounds.height)
     }
     
     // MARK: - Public
     
     func configure(with url: String) {
-        image.loadThumbImage(with: url)
+        imageCell.loadThumbImage(with: url)
     }
 }
-
-
-
-

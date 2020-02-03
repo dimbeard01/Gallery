@@ -18,20 +18,20 @@ final class FooterBarView: UIView {
         }
     }
     
-    var onLibraryButtonTapped: Bool?
-    var onSaved: (() -> Void)?
-    var onLoadDone: (([UIImage]) -> Void)?
-    var imageForSaveDict: [String : UIImage] = [:]
+    var onLibraryButtonPressed: Bool?
+    var onSaveButtonPressed: (() -> Void)?
+    var onLoadFromDirectoryDone: (([[String: UIImage]]) -> Void)?
+    var imageForSaveDict: [String: UIImage] = [:]
 
     private lazy var saveButton: UIButton = {
         let button = UIButton(type: .system)
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
         button.backgroundColor = #colorLiteral(red: 0.7879012227, green: 0.7959392071, blue: 0.8083154559, alpha: 1)
-    
         button.tintColor = .black
-        button.addTarget(self, action: #selector(saveImage), for: .touchUpInside)
+        button.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
         button.setImage(UIImage(named: "save"), for: .normal)
+        button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         return button
     }()
     
@@ -41,8 +41,9 @@ final class FooterBarView: UIView {
         button.layer.masksToBounds = true
         button.backgroundColor = #colorLiteral(red: 0.7879012227, green: 0.7959392071, blue: 0.8083154559, alpha: 1)
         button.tintColor = .black
-        button.addTarget(self, action: #selector(goToLibrary), for: .touchUpInside)
+        button.addTarget(self, action: #selector(moveToLibraryButtonPressed), for: .touchUpInside)
         button.setImage(UIImage(named: "folder"), for: .normal)
+        button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         return button
     }()
     
@@ -72,16 +73,16 @@ final class FooterBarView: UIView {
   
     // MARK: - Actions
 
-    @objc func saveImage() {
+    @objc private func saveButtonPressed() {
         imageForSaveDict.forEach { (key, value) in
-            value.saveImageDocumentDirectory(image: value, imageName: key)
+            DeviceData.shared.saveImageDocumentDirectory(image: value, imageName: key)
         }
-        onSaved?()
+        onSaveButtonPressed?()
     }
     
-    @objc func goToLibrary() {
-        onLibraryButtonTapped = true
-        guard let images: [UIImage] = UIImage().getImageFromDocumentDirectory() else { return }
-        onLoadDone?(images)
+    @objc private func moveToLibraryButtonPressed() {
+        onLibraryButtonPressed = true
+        guard let itemsFromDirectory: [[String: UIImage]] = DeviceData.shared.getDataDocumentDirectory() else { return }
+        onLoadFromDirectoryDone?(itemsFromDirectory)
     }
 }

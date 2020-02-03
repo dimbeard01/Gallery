@@ -14,7 +14,7 @@ final class LibraryPreviewCollectionViewCell: UICollectionViewCell {
     
     static let identifier: String = "identifier"
     
-    private let image: CustomImageView = {
+    private let imageCell: CustomImageView = {
         let image = CustomImageView()
         image.contentMode = .scaleAspectFit
         return image
@@ -24,7 +24,9 @@ final class LibraryPreviewCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         contentView.clipsToBounds = true
+        contentView.addSubview(imageCell)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -35,14 +37,12 @@ final class LibraryPreviewCollectionViewCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        contentView.addSubview(image)
-        image.frame = CGRect(x: 0, y: 0, width: contentView.bounds.width, height: contentView.bounds.height)
+        imageCell.frame = CGRect(x: 0, y: 0, width: contentView.bounds.width, height: contentView.bounds.height)
     }
     
     // MARK: - Public
     
-    func configure(with imageFromDirectory: UIImage) {
-        image.image = imageFromDirectory
+    func configure(with imageFromDirectory: [String: UIImage]) {
+        imageCell.image = imageFromDirectory.values.first
     }
 }
